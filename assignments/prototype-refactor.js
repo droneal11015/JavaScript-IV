@@ -14,16 +14,17 @@ Prototype Refactor
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
-class gameObject(stats) {
+class gameObject{
     constructor(stats){
         this.createdAt = stats.createdAt;
         this.dimensions = stats.dimensions;
     }
+    destroy() {
+        return `${this.name} was removed from the game.`;
+    }
 }
 
-destroy() {
-    console.log(`${this.name} was removed from the game.`);
-}
+
 
 /*
 === CharacterStats ===
@@ -37,11 +38,15 @@ class characterStats extends gameObject {
         this.healthPoints = stats.healthPoints;
         this.name = stats.name;
     }
+    takeDamage() {
+        return `${this.name} took ${healthPoints} HP damage.`;
+        if ((this.healthPoints -= healthPoints) <= 0) {
+            this.destroy();
+          }
+    }
 }
 
-takeDamage() {
-    console.log(`${this.name} took ${healthPoints} HP damage.`)
-}
+
 
 /* OLD CODE
 characterStats.prototype = Object.create(gameObject.prototype);
@@ -61,18 +66,25 @@ if ((this.healthPoints -= healthPoints) <= 0) {
 * should inherit destroy() from GameObject through CharacterStats
 * should inherit takeDamage() from CharacterStats
 */
-class Humanoid(stats) {
-characterStats.call(this, stats);
-this.team = stats.team;
-this.weapons = stats.weapons;
-this.language = stats.language;
+class Humanoid extends gameObject {
+    constructor(stats){
+      super(gameObject);
+    this.team = stats.team;
+    this.weapons = stats.weapons;
+    this.language = stats.language;
+    }
+    greet(){
+        return `${this.name} offers a greeting in ${this.language}`;
+    }
 }
 
+
+/*OLD CODE
 Humanoid.prototype = Object.create(characterStats.prototype);
 
 Humanoid.prototype.greet = function() {
 console.log(`${this.name} offers a greeting in ${this.language}`);
-}
+}*/
 
 /*
 * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -84,7 +96,7 @@ console.log(`${this.name} offers a greeting in ${this.language}`);
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
 const mage = new Humanoid({
   createdAt: new Date(),
   dimensions: {
@@ -95,9 +107,7 @@ const mage = new Humanoid({
   healthPoints: 5,
   name: 'Bruce',
   team: 'Mage Guild',
-  weapons: [
-    'Staff of Shamalama',
-  ],
+  weapons:'Staff of Shamalama',
   language: 'Common Tongue',
 });
 
@@ -145,4 +155,3 @@ console.log(archer.language); // Elvish
 console.log(archer.greet()); // Lilith offers a greeting in Elvish.
 console.log(mage.takeDamage()); // Bruce took damage.
 console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
