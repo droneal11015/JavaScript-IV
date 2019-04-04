@@ -9,7 +9,7 @@ class Person {
       this.gender = attributes.gender;
     }
         speak() {
-            return `Hello, my name is ${this.Name}, I am from ${this.Location}`;
+            return `Hello, my name is ${this.name}, I am from ${this.location}`;
       }
 }
 
@@ -17,9 +17,9 @@ class Person {
 class Instructor extends Person {
     constructor(attributes){
     super(attributes);
-    this.Specialty = attributes.specialty;
-    this.FavLanguage = attributes.language;
-    this.CatchPhrase = attributes.phrase;
+    this.specialty = attributes.specialty;
+    this.favLanguage = attributes.language;
+    this.catchPhrase = attributes.phrase;
         }
         demo(subject) {
             return `Today we are learning about ${subject}`;
